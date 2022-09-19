@@ -1,0 +1,40 @@
+
+---------------------------------------------
+git archive HEAD --format=zip > $JOB_NAME-$BUILD_NUMBER-archive.zip
+cp -r $JOB_NAME-$BUILD_NUMBER-archive.zip /build/
+cd /build/
+mkdir $JOB_NAME-$BUILD_NUMBER
+unzip $JOB_NAME-$BUILD_NUMBER-archive.zip -d $JOB_NAME-$BUILD_NUMBER
+#Unit Testing
+echo "unit testing started"
+if grep 'Fatel' /build/$JOB_NAME-$BUILD_NUMBER/index.php; then
+ echo "Test is failed in following number of line"
+ sed -n '/Fatel/=' /build/$JOB_NAME-$BUILD_NUMBER/index.php
+ exit 1
+fi
+echo "Test is Successful"
+
+sudo apt-get install php -y
+Then install common PHP extensions such as GD, MySQL, and so forth.
+
+sudo apt-get install -y php-{bcmath,bz2,intl,gd,mbstring,mysql,zip} && sudo apt-get install libapache2-mod-php  -y
+
+
+
+--------------------
+cd /var/www/
+cd /var/www/deployments/
+sudo mkdir $JOB_NAME-$BUILD_NUMBER
+sudo unzip /deploy/$JOB_NAME-$BUILD_NUMBER-archive.zip -d /var/www/deployments/$JOB_NAME-$BUILD_NUMBER
+cd /var/www/
+sudo rm -rf html
+sudo ln -s deployments/$JOB_NAME-$BUILD_NUMBER html
+------------------------------------------------------------------------
+node('master') {
+    stage('checkout') {
+        git 'git@github.com:gkaravindkumar/test.git'
+    }
+    stage('run script') {
+        sh label: '', script: 'echo "hello world"'
+    }
+}
