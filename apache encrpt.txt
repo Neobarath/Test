@@ -1,0 +1,7 @@
+sudo apt install certbot python3-certbot-apache
+
+install the certicates:
+sudo certbot --apache
+
+auto renewel: 
+sudo certbot renew --dry-run

@@ -1,0 +1,24 @@
+
+    ServerAdmin barathan.chinnaiah@dci.in
+    ServerName training.dci.in
+    ServerAlias www.training.dci.in
+
+
+<VirtualHost *:80>
+        ServerAdmin  barathan.chinnaiah@dci.in
+        ServerName   training.dci.in
+        ServerAlias  www.training.dci.in
+        DocumentRoot /var/www/html/training.dci.in
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+a2ensite
+<Directory /var/www/>
+        Options Indexes
+        AllowOverride None
+        Require all granted
+
+</Directory>
+
+sudo a2enmod headers
