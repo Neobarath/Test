@@ -1,0 +1,35 @@
+<IfModule mod_ssl.c>
+        <VirtualHost *:443>
+                ServerAdmin support@dci.in
+                ServerName training.dci.in:443
+                ServerAlias www.training.dci.in.com
+
+                DocumentRoot /var/www/html/training.dci.in
+
+                ErrorLog ${APACHE_LOG_DIR}/error.log
+                CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+                SSLEngine on
+
+                SSLCertificateFile      /etc/ssl/dci/dci_in.crt
+                SSLCertificateKeyFile /etc/ssl/dci/dci_in.key
+
+                SSLCACertificateFile /etc/ssl/dci/dci_in.ca-bundle
+
+
+                <FilesMatch "\.(cgi|shtml|phtml|php)$">
+                                SSLOptions +StdEnvVars
+                </FilesMatch>
+                <Directory /usr/lib/cgi-bin>
+                                SSLOptions +StdEnvVars
+                </Directory>
+
+
+                BrowserMatch "MSIE [2-6]" \
+                                nokeepalive ssl-unclean-shutdown \
+                                downgrade-1.0 force-response-1.0
+                # MSIE 7 and newer should be able to use keepalive
+                BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+
+        </VirtualHost>
+</IfModule>
